@@ -16,6 +16,8 @@
 import mailcap, mimetypes, tempfile, os, subprocess, glob, time, shlex, stat
 import os.path, sys, weakref
 import urwid
+# import json
+import jsonpickle
 from .. import controller, utils, flow
 import flowlist, flowview, help, common, grideditor, palettes, contentview, flowdetailview
 
@@ -675,6 +677,23 @@ class ConsoleMaster(flow.FlowMaster):
             f.close()
         except IOError, v:
             self.statusbar.message(v.strerror)
+
+    def _write_flows_to_json(self, path, flows):
+        self.state.last_saveload = path
+        if not path:
+            return
+        path = os.path.expanduser(path)
+        try:
+            f = file(path, "wb")
+            for i in flows:
+                f.write(jsonpickle.encode(i))
+                # json.dumps(i.__dict__, f)
+            f.close()
+        except IOError, v:
+            self.statusbar.message(v.strerror)
+
+    def save_json_one_flow(self, path, flow):
+        return self._write_flows_to_json(path, [flow])
 
     def save_one_flow(self, path, flow):
         return self._write_flows(path, [flow])

@@ -12,3 +12,4 @@ mitmdumpc
 .coverage
 netlib
 libpathod
+.DS_Store	

@@ -28,6 +28,7 @@ def _mkhelp():
         ("D", "duplicate flow"),
         ("e", "edit request/response"),
         ("f", "load full body data"),
+        ("J", "dump this flow to JSON"),
         ("m", "change body display mode for this entity"),
             (None,
                 common.highlight_key("automatic", "a") +
@@ -471,6 +472,13 @@ class FlowView(common.WWrap):
             self.master.view_flow(f)
             self.master.currentflow = f
             self.master.statusbar.message("Duplicated.")
+        elif key == "J":
+            self.master.path_prompt(
+                "Save this flow to JSON: ",
+                self.state.last_saveload,
+                self.master.save_json_one_flow,
+                self.flow
+            )
         elif key == "e":
             if self.state.view_flow_mode == common.VIEW_FLOW_REQUEST:
                 self.master.prompt_onekey(
